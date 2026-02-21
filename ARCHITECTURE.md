@@ -8,34 +8,35 @@ The MIDL DeFi Exchange is a decentralized perpetual trading platform that combin
 
 ### High-Level Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Frontend (Next.js)                    │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │   Trading    │  │   Wallet     │  │   Charts     │     │
-│  │   Interface  │  │   Connect    │  │  (TradingView)│     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    MIDL Protocol Layer                       │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │   Executor   │  │   Satoshi    │  │    Wagmi     │     │
-│  │   (TX Flow)  │  │     Kit      │  │  (EVM Read)  │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                ┌───────────┴───────────┐
-                ▼                       ▼
-┌──────────────────────┐    ┌──────────────────────┐
-│   Bitcoin Layer 1    │    │   EVM Smart Contract │
-│   (Regtest/Mainnet)  │    │  (PerpetualExchange) │
-│                      │    │                      │
-│  - Transaction Fees  │    │  - Position Logic    │
-│  - Security          │    │  - Margin Calc       │
-│  - Finality          │    │  - PnL Settlement    │
-└──────────────────────┘    └──────────────────────┘
+```mermaid
+graph TB
+    subgraph Frontend["Frontend Layer (Next.js)"]
+        UI[Trading Interface]
+        WC[Wallet Connector]
+        Charts[TradingView Charts]
+    end
+    
+    subgraph MIDL["MIDL Protocol Layer"]
+        Executor[Executor SDK]
+        SatoshiKit[Satoshi Kit]
+        Wagmi[Wagmi Client]
+    end
+    
+    subgraph Blockchain["Blockchain Layer"]
+        Bitcoin[Bitcoin Layer 1]
+        EVM[EVM Runtime]
+        Contract[PerpetualExchange Contract]
+    end
+    
+    UI --> Executor
+    WC --> SatoshiKit
+    UI --> Wagmi
+    
+    Executor --> Bitcoin
+    Executor --> EVM
+    Wagmi --> Contract
+    Contract --> EVM
+    EVM -.->|Secured by| Bitcoin
 ```
 
 ## Technology Stack
@@ -162,38 +163,36 @@ apps/dashboard/
 
 Every write operation on MIDL requires both a Bitcoin transaction and an EVM transaction:
 
-```
-User Action (e.g., Open Position)
-        │
-        ▼
-1. Add Transaction Intention
-   - Create EVM transaction data
-   - Encode function call
-   - Set gas parameters
-        │
-        ▼
-2. Finalize BTC Transaction
-   - Calculate required BTC for gas
-   - Form Bitcoin transaction
-   - Include EVM tx data
-        │
-        ▼
-3. Sign Intentions
-   - Sign EVM transaction
-   - Sign Bitcoin transaction
-   - User approves in Xverse
-        │
-        ▼
-4. Broadcast Transactions
-   - Submit BTC tx to Bitcoin network
-   - Submit EVM tx to MIDL
-   - Wait for confirmations
-        │
-        ▼
-5. Confirmation
-   - Bitcoin confirms (1+ blocks)
-   - EVM state updates
-   - UI reflects changes
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Executor
+    participant Xverse
+    participant Bitcoin
+    participant EVM
+    participant Contract
+
+    User->>Frontend: Initiate Position Open
+    Frontend->>Executor: addTxIntention()
+    Executor->>Executor: Encode EVM Transaction
+    Frontend->>Executor: finalizeBTCTransaction()
+    Executor->>Executor: Calculate Gas & Form BTC TX
+    Executor-->>Frontend: BTC Transaction Data
+    Frontend->>Xverse: Request Signature
+    Xverse->>User: Show Transaction Details
+    User->>Xverse: Approve Transaction
+    Xverse-->>Frontend: Signed Transactions
+    Frontend->>Executor: signIntention()
+    Frontend->>Executor: sendBTCTransactions()
+    Executor->>Bitcoin: Broadcast BTC Transaction
+    Bitcoin->>Bitcoin: Mine Block (Confirmation)
+    Bitcoin->>EVM: Trigger EVM Execution
+    EVM->>Contract: Execute openPosition()
+    Contract->>Contract: Update State
+    Contract-->>EVM: Emit PositionOpened Event
+    EVM-->>Frontend: Transaction Receipt
+    Frontend->>User: Update UI with Position
 ```
 
 #### Implementation
@@ -270,50 +269,44 @@ export const selectedMarketAtom = atom<string>("BTC-USDC");
 
 ### Read Operations (No BTC Required)
 
-```
-Component
-    │
-    ▼
-useReadContract (wagmi)
-    │
-    ▼
-RPC Call to MIDL
-    │
-    ▼
-Smart Contract View Function
-    │
-    ▼
-Return Data
-    │
-    ▼
-Component Updates
+```mermaid
+sequenceDiagram
+    participant Component
+    participant Wagmi
+    participant RPC
+    participant Contract
+
+    Component->>Wagmi: useReadContract()
+    Wagmi->>RPC: eth_call
+    RPC->>Contract: Call View Function
+    Contract-->>RPC: Return Data
+    RPC-->>Wagmi: Response
+    Wagmi-->>Component: Update State
+    Component->>Component: Re-render
 ```
 
 ### Write Operations (BTC Required)
 
-```
-Component
-    │
-    ▼
-usePerpContract Hook
-    │
-    ▼
-Add TX Intention
-    │
-    ▼
-Finalize BTC TX
-    │
-    ▼
-Sign with Xverse
-    │
-    ▼
-Broadcast to Network
-    │
-    ▼
-Wait for Confirmation
-    │
-    ▼
-Update UI
+```mermaid
+sequenceDiagram
+    participant Component
+    participant Hook as usePerpContract
+    participant Executor
+    participant Xverse
+    participant Network
+
+    Component->>Hook: openPosition()
+    Hook->>Executor: addTxIntention()
+    Hook->>Executor: finalizeBTCTransaction()
+    Executor-->>Hook: BTC TX Data
+    Hook->>Xverse: Request Signature
+    Xverse-->>Hook: Signed TX
+    Hook->>Executor: sendBTCTransactions()
+    Executor->>Network: Broadcast
+    Network-->>Executor: Confirmation
+    Executor-->>Hook: Receipt
+    Hook-->>Component: Success
+    Component->>Component: Update UI
 ```
 
 ## Security Considerations
