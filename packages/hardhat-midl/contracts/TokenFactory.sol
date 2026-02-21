@@ -28,8 +28,8 @@ contract TokenFactory {
     uint constant MEMECOIN_FUNDING_DEADLINE_DURATION = 10 days;
     uint constant MEMECOIN_FUNDING_GOAL = 24 ether;
 
-    address constant UNISWAP_V2_FACTORY_ADDRESS = 0x5c6f49fdd440e6f58a99ef7d5fa65d206758aa6f;
-    address constant UNISWAP_V2_ROUTER_ADDRESS = 0x7a2c4f55e8473a4248563c0275a5b009f539488d;
+    address public immutable UNISWAP_V2_FACTORY_ADDRESS;
+    address public immutable UNISWAP_V2_ROUTER_ADDRESS;
 
 
     uint constant DECIMALS = 10 ** 18;
@@ -38,6 +38,11 @@ contract TokenFactory {
 
     uint256 public constant INITIAL_PRICE = 30000000000000;  // Initial price in wei (P0), 3.00 * 10^13
     uint256 public constant K = 8 * 10**15;  // Growth rate (k), scaled to avoid precision loss (0.01 * 10^18)
+
+    constructor(address _uniswapFactory, address _uniswapRouter) {
+        UNISWAP_V2_FACTORY_ADDRESS = _uniswapFactory;
+        UNISWAP_V2_ROUTER_ADDRESS = _uniswapRouter;
+    }
 
     // Function to calculate the cost in wei for purchasing `tokensToBuy` starting from `currentSupply`
     function calculateCost(uint256 currentSupply, uint256 tokensToBuy) public pure returns (uint256) {

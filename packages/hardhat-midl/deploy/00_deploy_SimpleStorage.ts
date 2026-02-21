@@ -1,34 +1,16 @@
-import DeployFunction from "hardhat-deploy";
+import type { DeployFunction } from "hardhat-deploy/types";
 
-interface Midl {
-  initialize(): Promise<void>;
-  deploy(contractName: string, args: unknown[]): Promise<void>;
-  execute(): Promise<void>;
-}
-
-interface HardhatRuntimeEnvironment {
-  midl: Midl;
-}
-
-const deploy: typeof DeployFunction = async (
-  hre: HardhatRuntimeEnvironment,
-) => {
-  /**
-   * Initializes the MIDL hardhat deploy SDK
-   */
-  await hre.midl.initialize();
-
-  /**
-   * Add the deploy contract transaction intention
-   */
-  await hre.midl.deploy("SimpleStorage", ["Hello from MIDL!"]);
-
-  /**
-   * Sends the BTC transaction and EVM transaction to the network
-   */
-  await hre.midl.execute();
+const deploy: DeployFunction = async ({ midl }) => {
+  console.log("🚀 Starting SimpleStorage deployment...");
+  
+  await midl.initialize();
+  await midl.deploy("SimpleStorage", ["Hello from MIDL!"]);
+  await midl.execute();
+  
+  const contract = await midl.get("SimpleStorage");
+  console.log("✅ SimpleStorage deployed at:", contract?.address);
 };
 
-deploy.id = "00_deploy_SimpleStorage";
+deploy.tags = ["SimpleStorage"];
 
 export default deploy;

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 
-import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
 
 contract FundingOracle {
     uint256 public fundingRate;
@@ -27,8 +28,12 @@ contract FundingOracle {
     }
 
     function updateFundingRateFromOracle() external onlyOwner {
-        (, int256 price, , ,) = priceFeed.latestRoundData();
-        fundingRate = uint256(price);
+        (, int256 price, , uint256 updatedAt,) = priceFeed.latestRoundData();
+        require(price > 0, "Invalid price");
+        require(block.timestamp - updatedAt < 1 hours, "Stale price");
+        
+        uint8 decimals = priceFeed.decimals();
+        fundingRate = uint256(price) * 1e18 / (10 ** decimals);
         emit FundingRateUpdated(fundingRate);
     }
 }

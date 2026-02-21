@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
-import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import "./MarginAccount.sol";
 
 contract PerpetualFutures {
@@ -38,7 +38,9 @@ contract PerpetualFutures {
     }
 
     function getLatestPrice() public view returns (int256) {
-        (, int256 price, , ,) = priceFeed.latestRoundData();
+        (, int256 price, , uint256 updatedAt,) = priceFeed.latestRoundData();
+        require(price > 0, "Invalid price");
+        require(block.timestamp - updatedAt < 1 hours, "Stale price");
         return price;
     }
 
