@@ -7,11 +7,6 @@
     "apps/*",
     "packages/*"
   ],
-  "pnpm": {
-    "overrides": {
-      "viem": "1.21.4"
-    }
-  },
   "scripts": {
     "dev": "pnpm --filter ./apps/dashboard dev",
     "build": "pnpm --recursive run build",
@@ -51,6 +46,6 @@
   "author": "Your Team",
   "license": "MIT",
   "dependencies": {
-    "viem": "1.21.4"
+    "@midl/core": "3.0.2"
   }
 }

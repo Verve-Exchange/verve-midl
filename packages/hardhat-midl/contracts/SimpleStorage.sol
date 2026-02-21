@@ -25,4 +25,8 @@ contract SimpleStorage {
         message = _message;
         emit MessageChanged(_message);
     }
+    
+    function getMessage() public view returns (string memory) {
+        return message;
+    }
 }

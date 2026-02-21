@@ -21,7 +21,7 @@ const accounts = [
 const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
-      default: 0, // First account
+      default: 0,
     },
   },
   networks: {
@@ -122,6 +122,6 @@ const config: HardhatUserConfig = {
     cache: "./cache",
     artifacts: "./artifacts",
   },
-};
+} as any;
 
 export default config;
