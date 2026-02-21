@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter ./apps/dashboard dev",
+    "build": "pnpm --recursive run build",
+    "lint": "pnpm --recursive run lint"
+  }
+}

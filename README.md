@@ -1,4 +1,4 @@
-# MIDL Hackathon Monorepo
+# Verve Midl Monorepo
 
 This is a full-stack monorepo for the MIDL Hackathon, using pnpm workspaces. It contains:
 
