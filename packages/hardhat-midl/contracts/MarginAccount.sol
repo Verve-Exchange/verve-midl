@@ -2,14 +2,25 @@
 pragma solidity ^0.8.0;
 
 
+
 contract MarginAccount {
     mapping(address => uint256) public balances;
     mapping(address => uint256) public lockedMargins;
+    address public owner;
 
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
     event MarginLocked(address indexed user, uint256 amount);
     event MarginUnlocked(address indexed user, uint256 amount, int256 pnl);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
 
     function deposit() external payable {
         balances[msg.sender] += msg.value;
@@ -23,14 +34,14 @@ contract MarginAccount {
         emit Withdraw(msg.sender, amount);
     }
 
-    function lockMargin(address user, uint256 amount) external {
+    function lockMargin(address user, uint256 amount) external onlyOwner {
         require(balances[user] >= amount, "Insufficient balance");
         balances[user] -= amount;
         lockedMargins[user] += amount;
         emit MarginLocked(user, amount);
     }
 
-    function unlockMargin(address user, uint256 amount, int256 pnl) external {
+    function unlockMargin(address user, uint256 amount, int256 pnl) external onlyOwner {
         require(lockedMargins[user] >= amount, "Insufficient locked margin");
         lockedMargins[user] -= amount;
         uint256 payout = amount;

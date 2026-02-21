@@ -24,7 +24,15 @@ contract PerpetualFutures {
     event PositionClosed(address indexed trader, int256 pnl);
     event FundingRateUpdated(uint256 newFundingRate);
 
+    address public owner;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner");
+        _;
+    }
+
     constructor(address _priceFeed, address _marginAccount) {
+        owner = msg.sender;
         priceFeed = AggregatorV3Interface(_priceFeed);
         marginAccount = MarginAccount(_marginAccount);
     }
@@ -44,16 +52,26 @@ contract PerpetualFutures {
     }
 
     function closePosition() external {
-        Position storage pos = positions[msg.sender];
+        _closePosition(msg.sender);
+    }
+
+    function forceClosePosition(address trader) external {
+        // Only callable by LiquidationManager
+        require(msg.sender == address(this) || msg.sender == address(marginAccount), "Unauthorized");
+        _closePosition(trader);
+    }
+
+    function _closePosition(address trader) internal {
+        Position storage pos = positions[trader];
         require(pos.isOpen, "No open position");
         int256 exitPrice = getLatestPrice();
         int256 pnl = calculatePnL(pos, exitPrice);
-        marginAccount.unlockMargin(msg.sender, uint256(pos.margin), pnl);
+        marginAccount.unlockMargin(trader, uint256(pos.margin), pnl);
         pos.isOpen = false;
-        emit PositionClosed(msg.sender, pnl);
+        emit PositionClosed(trader, pnl);
     }
 
-    function updateFundingRate(uint256 newFundingRate) external {
+    function updateFundingRate(uint256 newFundingRate) external onlyOwner {
         fundingRate = newFundingRate;
         lastFundingTimestamp = block.timestamp;
         emit FundingRateUpdated(newFundingRate);
