@@ -1,96 +1,101 @@
-# Verve Midl Monorepo
+# MIDL DeFi Exchange - VibeHack 2026
 
-This is a full-stack monorepo for the MIDL Hackathon, using pnpm workspaces. It contains:
+A production-ready decentralized perpetual exchange built on MIDL Protocol for the VibeHack hackathon (Feb 9-28, 2026).
 
-- **apps/dashboard**: Next.js frontend app for trading, explorer, holdings, and wallet management.
-- **packages/hardhat-midl**: Hardhat smart contract package for perpetual futures, margin, liquidation, and Chainlink integration.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28-blue)](https://soliditylang.org/)
+[![MIDL](https://img.shields.io/badge/MIDL-Protocol-orange)](https://midl.xyz)
 
-## Monorepo Structure
+## 🚀 Quick Start
 
-```
-midl-hackathon/
-├── apps/
-│   └── dashboard/
-├── packages/
-│   └── hardhat-midl/
-├── pnpm-workspace.yaml
-├── package.json
-├── README.md
-```
+Get started in 5 minutes! See [QUICKSTART.md](QUICKSTART.md)
 
-## Getting Started
-
-### Install dependencies
-
-```sh
+```bash
+# Clone and install
+git clone <your-repo>
+cd midl-defi-exchange
 pnpm install
+
+# Deploy contracts
+pnpm deploy:contracts
+
+# Start app
+pnpm dev
 ```
 
-### Run Dashboard App
+## 📖 Documentation
 
-```sh
-pnpm --filter ./apps/dashboard dev
+- **[QUICKSTART.md](QUICKSTART.md)** - Get started in 5 minutes
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
+- **[TESTING.md](TESTING.md)** - Comprehensive testing guide
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical architecture
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Complete project overview
+- **[VIBEHACK_SUBMISSION.md](VIBEHACK_SUBMISSION.md)** - Hackathon submission details
+
+## ✨ Features
+
+- **Perpetual Trading**: Long/short positions with up to 10x leverage
+- **Bitcoin-Backed**: All transactions secured by Bitcoin L1
+- **Real-time Charts**: TradingView integration for market analysis
+- **MIDL Integration**: Native Bitcoin wallet support via Xverse
+- **Cross/Isolated Margin**: Flexible margin management
+- **Mobile Responsive**: Full trading experience on any device
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Smart Contracts**: Solidity 0.8.28
+- **Blockchain**: MIDL Protocol (Bitcoin L1 + EVM)
+- **Wallet**: Xverse (via @midl/satoshi-kit)
+- **Deployment**: Hardhat with @midl/hardhat-deploy
+- **UI**: Tailwind CSS, Radix UI, shadcn/ui
+
+## 📦 Project Structure
+
+```
+.
+├── contracts/              # Solidity smart contracts
+├── deploy/                 # Hardhat deployment scripts
+├── apps/dashboard/         # Next.js frontend
+├── scripts/               # Setup and utility scripts
+└── docs/                  # Comprehensive documentation
 ```
 
-### Build All Apps & Packages
+## 🔧 Prerequisites
 
-```sh
-pnpm run build
-```
+- Node.js 18+ and pnpm
+- Xverse wallet installed
+- Regtest BTC from [faucet.midl.xyz](https://faucet.midl.xyz)
 
-### Run Hardhat Contracts
+## 🚢 Deployment
 
-```sh
-cd packages/hardhat-midl
-pnpm hardhat test
-pnpm hardhat deploy
-```
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions.
 
-## Adding New Apps or Packages
+## 🧪 Testing
 
-- Add new folders under `apps/` or `packages/`.
-- Update `pnpm-workspace.yaml` if needed.
+See [TESTING.md](TESTING.md) for comprehensive testing guide.
 
-## Workspace Configuration
+## 🤝 Contributing
 
-**pnpm-workspace.yaml**
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
-```yaml
-packages:
-  - "apps/*"
-  - "packages/*"
-```
+## 📝 License
 
-**Root package.json**
+MIT - See [LICENSE](LICENSE) file for details.
 
-```json
-{
-  "private": true,
-  "workspaces": ["apps/*", "packages/*"],
-  "scripts": {
-    "dev": "pnpm --filter ./apps/dashboard dev",
-    "build": "pnpm --recursive run build",
-    "lint": "pnpm --recursive run lint"
-  }
-}
-```
+## 🆘 Support
 
-## Trading Instructions
+- **Discord**: [VibeHack Channel](https://discord.gg/midl)
+- **Docs**: [MIDL Documentation](https://docs.midl.xyz)
+- **Issues**: Create a GitHub issue
 
-- Connect your wallet in the dashboard app.
-- Use the explorer and trenches pages to view tokens and market stats.
-- Place orders, manage holdings, and interact with smart contracts.
+## 🎯 VibeHack 2026
 
-## Chainlink Integration
-
-- Price feeds are integrated in the smart contracts for secure trading.
-- See `packages/hardhat-midl/contracts/` for details.
-
-## Contract Deployment
-
-- Use Hardhat scripts in `packages/hardhat-midl` to deploy contracts to the MIDL network.
-- Update environment variables and deployment scripts as needed.
+Built for MIDL VibeHack (Feb 9-28, 2026). See [VIBEHACK_SUBMISSION.md](VIBEHACK_SUBMISSION.md) for submission details.
 
 ---
 
-For questions or support, see the docs or contact the team.
+**Built with ❤️ for VibeHack 2026**
