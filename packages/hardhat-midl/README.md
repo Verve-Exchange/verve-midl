@@ -1,60 +1,80 @@
-# Sample Hardhat 3 Beta Project (`node:test` and `viem`)
+## Perpetual Futures Contracts
 
-This project showcases a Hardhat 3 Beta project using the native Node.js test runner (`node:test`) and the `viem` library for Ethereum interactions.
+This project includes:
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+- PerpetualFutures.sol: Core perpetual futures logic
+- MarginAccount.sol: Handles user margin deposits/withdrawals
+- FundingOracle.sol: Updates and provides funding rates
+- LiquidationManager.sol: Handles position liquidations
 
-## Project Overview
+### Sequence Diagram
 
-This example project includes:
+```mermaid
+sequenceDiagram
+    participant User
+    participant MarginAccount
+    participant PerpetualFutures
+    participant FundingOracle
+    participant LiquidationManager
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using [`node:test`](nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/).
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
-
-## Usage
-
-### Running Tests
-
-To run all the tests in the project, execute the following command:
-
-```shell
-npx hardhat test
+    User->>MarginAccount: deposit()
+    User->>PerpetualFutures: openPosition()
+    PerpetualFutures->>FundingOracle: get fundingRate
+    FundingOracle-->>PerpetualFutures: fundingRate
+    User->>PerpetualFutures: closePosition()
+    PerpetualFutures->>MarginAccount: update balance
+    FundingOracle->>PerpetualFutures: updateFundingRate()
+    LiquidationManager->>PerpetualFutures: liquidate(trader)
+    PerpetualFutures->>MarginAccount: update balance (liquidation)
+    MarginAccount-->>User: withdraw()
 ```
 
-You can also selectively run the Solidity or `node:test` tests:
+## Trading Perpetual Futures
 
-```shell
-npx hardhat test solidity
-npx hardhat test nodejs
+This app is production-ready for trading perpetual futures on crypto assets using Chainlink price feeds.
+
+### Contracts
+
+- PerpetualFutures.sol: Trading logic, integrates Chainlink price feed
+- MarginAccount.sol: Handles deposits, withdrawals, margin locking/unlocking
+- FundingOracle.sol: Updates funding rates
+- LiquidationManager.sol: Handles liquidations
+- interfaces/AggregatorV3Interface.sol: Chainlink price feed interface
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant MarginAccount
+    participant PerpetualFutures
+    participant FundingOracle
+    participant LiquidationManager
+    participant Chainlink
+
+    User->>MarginAccount: deposit()
+    User->>PerpetualFutures: openPosition()
+    PerpetualFutures->>Chainlink: getLatestPrice()
+    Chainlink-->>PerpetualFutures: price
+    PerpetualFutures->>MarginAccount: lockMargin()
+    User->>PerpetualFutures: closePosition()
+    PerpetualFutures->>Chainlink: getLatestPrice()
+    PerpetualFutures->>MarginAccount: unlockMargin()
+    FundingOracle->>PerpetualFutures: updateFundingRate()
+    LiquidationManager->>PerpetualFutures: liquidate(trader)
+    PerpetualFutures->>MarginAccount: update balance (liquidation)
+    MarginAccount-->>User: withdraw()
 ```
 
-### Make a deployment to Sepolia
+### Usage
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+- Deploy MarginAccount, PerpetualFutures, FundingOracle, LiquidationManager
+- Use Chainlink price feed address for PerpetualFutures constructor
+- Users deposit margin, open/close positions, and withdraw
 
-To run the deployment to a local chain:
+### Example Chainlink Price Feed
 
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
-
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
-
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+- [ETH/USD Feed Address](https://docs.chain.link/data-feeds/price-feeds/addresses)
 
 # MIDL Hardhat Monorepo Setup
 
