@@ -19,6 +19,11 @@ const accounts = [
 ];
 
 const config: HardhatUserConfig = {
+  namedAccounts: {
+    deployer: {
+      default: 0, // First account
+    },
+  },
   networks: {
     default: {
       url: "https://rpc.mainnet.midl.xyz",
