@@ -7,6 +7,19 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@openzeppelin/contracts':
+        specifier: ^5.0.2
+        version: 5.4.0
+      '@uniswap/v2-core':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@uniswap/v2-periphery':
+        specifier: ^1.1.0-beta.0
+        version: 1.1.0-beta.0
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
     devDependencies:
       '@midl/executor':
         specifier: ^3.0.3
@@ -584,6 +597,9 @@ packages:
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
 
+  '@openzeppelin/contracts@5.4.0':
+    resolution: {integrity: sha512-eCYgWnLg6WO+X52I16TZt8uEjbtdkgLC0SUX/xnAksjjrQI4Xfn4iBRoI5j55dmlOhDv1Y7BoR3cU7e3WWhC6A==}
+
   '@rocketh/core@0.19.0':
     resolution: {integrity: sha512-pCauA7HP/5k0uyTgjOYApJGcNuVx61+o6AuvFUIR3DIaWyKgmSHB3oTmTe1CHZBWWBUurDf9SIYyAFS2qhTWJQ==}
 
@@ -698,6 +714,22 @@ packages:
 
   '@types/prompts@2.4.9':
     resolution: {integrity: sha512-qTxFi6Buiu8+50/+3DGIWLHM6QuWsEKugJnnP6iv2Mc4ncxE4A/OJkjuVOA+5X0X1S/nq5VJRa8Lu+nwcvbrKA==}
+
+  '@uniswap/lib@1.1.1':
+    resolution: {integrity: sha512-2yK7sLpKIT91TiS5sewHtOa7YuM8IuBXVl4GZv2jZFys4D2sY7K5vZh6MqD25TPA95Od+0YzCVq6cTF2IKrOmg==}
+    engines: {node: '>=10'}
+
+  '@uniswap/v2-core@1.0.0':
+    resolution: {integrity: sha512-BJiXrBGnN8mti7saW49MXwxDBRFiWemGetE58q8zgfnPPzQKq55ADltEILqOt6VFZ22kVeVKbF8gVd8aY3l7pA==}
+    engines: {node: '>=10'}
+
+  '@uniswap/v2-core@1.0.1':
+    resolution: {integrity: sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q==}
+    engines: {node: '>=10'}
+
+  '@uniswap/v2-periphery@1.1.0-beta.0':
+    resolution: {integrity: sha512-6dkwAMKza8nzqYiXEr2D86dgW3TTavUvCR0w2Tu33bAbM8Ah43LKAzH7oKKPRT5VJQaMi1jtkGs1E8JPor1n5g==}
+    engines: {node: '>=10'}
 
   abitype@0.9.10:
     resolution: {integrity: sha512-FIS7U4n7qwAT58KibwYig5iFG4K61rbhAqaQh/UWj8v1Y8mjX3F8TC9gd8cz9yT1TYel9f8nS5NO5kZp2RW0jQ==}
@@ -2719,6 +2751,8 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
 
+  '@openzeppelin/contracts@5.4.0': {}
+
   '@rocketh/core@0.19.0(typescript@5.8.3)(zod@4.3.6)':
     dependencies:
       abitype: 1.2.3(typescript@5.8.3)(zod@4.3.6)
@@ -2892,6 +2926,17 @@ snapshots:
     dependencies:
       '@types/node': 22.19.11
       kleur: 3.0.3
+
+  '@uniswap/lib@1.1.1': {}
+
+  '@uniswap/v2-core@1.0.0': {}
+
+  '@uniswap/v2-core@1.0.1': {}
+
+  '@uniswap/v2-periphery@1.1.0-beta.0':
+    dependencies:
+      '@uniswap/lib': 1.1.1
+      '@uniswap/v2-core': 1.0.0
 
   abitype@0.9.10(typescript@5.8.3)(zod@4.3.6):
     optionalDependencies:

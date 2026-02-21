@@ -10,6 +10,12 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.28.2",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "dotenv": "^16.4.5"
+  },
   "devDependencies": {
     "@midl/executor": "^3.0.3",
     "@midl/hardhat-deploy": "^3.0.3",
