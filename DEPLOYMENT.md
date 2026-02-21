@@ -2,6 +2,29 @@
 
 Complete guide for deploying the MIDL DeFi Exchange to production.
 
+## Deployment Flow
+
+```mermaid
+graph TD
+    A[Start] --> B[Install Dependencies]
+    B --> C[Configure Environment]
+    C --> D[Set Hardhat Mnemonic]
+    D --> E[Get Bitcoin Address]
+    E --> F[Claim Regtest BTC]
+    F --> G[Deploy Smart Contract]
+    G --> H{Deployment Success?}
+    H -->|No| F
+    H -->|Yes| I[Update Contract Address]
+    I --> J[Verify on Blockscout]
+    J --> K[Build Frontend]
+    K --> L[Deploy to Vercel]
+    L --> M[Configure Environment Variables]
+    M --> N[Test Deployment]
+    N --> O{Tests Pass?}
+    O -->|No| N
+    O -->|Yes| P[Production Ready]
+```
+
 ## Prerequisites
 
 1. **Xverse Wallet** with MIDL Regtest network added
