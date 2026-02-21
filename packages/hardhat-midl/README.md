@@ -76,6 +76,36 @@ sequenceDiagram
 
 - [ETH/USD Feed Address](https://docs.chain.link/data-feeds/price-feeds/addresses)
 
+## Chainlink Price Feed Integration
+
+This app uses Chainlink's official AggregatorV3Interface for secure price feeds. To trade futures on any crypto pair, set the correct feed address for your network and asset.
+
+### Example: ETH/USD on Sepolia
+
+- Feed address: `0x694AA1769357215DE4FAC081bf1f309aDC325306`
+- Update your deployment script to pass this address to PerpetualFutures and FundingOracle constructors.
+
+### Deployment Example
+
+```js
+const feed = "0x694AA1769357215DE4FAC081bf1f309aDC325306"; // ETH/USD Sepolia
+const marginAccount = await ethers.deployContract("MarginAccount");
+const perpetualFutures = await ethers.deployContract("PerpetualFutures", [
+  feed,
+  marginAccount.address,
+]);
+const fundingOracle = await ethers.deployContract("FundingOracle", [feed]);
+const liquidationManager = await ethers.deployContract("LiquidationManager", [
+  perpetualFutures.address,
+  marginAccount.address,
+]);
+```
+
+### Usage
+
+- All price reads use Chainlink's latestRoundData, normalized to 18 decimals.
+- You can change the feed address for other pairs/networks as needed.
+
 # MIDL Hardhat Monorepo Setup
 
 ## 1. Install dependencies
