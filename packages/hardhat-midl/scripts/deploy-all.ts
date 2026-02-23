@@ -1,90 +1,71 @@
 import hre from "hardhat";
-import { ethers } from "ethers";
 import * as fs from "fs";
 import * as path from "path";
+import "hardhat-deploy";
 
+/**
+ * This script runs all deployment scripts in order
+ * It uses the hardhat-deploy plugin to execute deploy scripts
+ */
 async function main() {
-  console.log("🚀 Starting full deployment...\n");
+  console.log("🚀 Starting full deployment via hardhat-deploy...\n");
+  console.log("Network:", hre.network.name);
   
-  const deployments: Record<string, string> = {};
-  
+  const networkConfig = hre.network.config as any;
+  if (networkConfig.url) {
+    console.log("RPC URL:", networkConfig.url);
+  }
+  console.log("\n" + "=".repeat(80) + "\n");
+
   try {
-    // Get provider and signer
-    const provider = new ethers.JsonRpcProvider(hre.network.config.url);
-    const accounts = hre.network.config.accounts as any;
-    const wallet = ethers.Wallet.fromPhrase(accounts.mnemonic).connect(provider);
+    // Run all deploy scripts using hardhat-deploy
+    // This will execute all scripts in the deploy/ folder in order
+    const { deployments } = hre as any;
     
-    console.log("📍 Deployer address:", wallet.address);
-    console.log("💰 Deployer balance:", ethers.formatEther(await provider.getBalance(wallet.address)), "ETH\n");
+    console.log("📦 Running deployment scripts...\n");
     
-    // 1. Deploy SimpleStorage
-    console.log("📦 Deploying SimpleStorage...");
-    const SimpleStorage = await ethers.getContractFactory("SimpleStorage");
-    const simpleStorage = await SimpleStorage.deploy("Hello from MIDL!");
-    await simpleStorage.waitForDeployment();
-    deployments["SimpleStorage"] = await simpleStorage.getAddress();
-    console.log("✅ SimpleStorage:", deployments["SimpleStorage"], "\n");
+    // Deploy all contracts
+    await deployments.fixture();
     
-    // 2. Deploy WETH9
-    console.log("📦 Deploying WETH9...");
-    const WETH9 = await ethers.getContractFactory("WETH9");
-    const weth9 = await WETH9.deploy();
-    await weth9.waitForDeployment();
-    deployments["WETH9"] = await weth9.getAddress();
-    console.log("✅ WETH9:", deployments["WETH9"], "\n");
-    
-    // 3. Deploy UniswapV2Factory
-    console.log("📦 Deploying UniswapV2Factory...");
-    const UniswapV2Factory = await ethers.getContractFactory("UniswapV2Factory");
-    const factory = await UniswapV2Factory.deploy(deployer.address);
-    await factory.waitForDeployment();
-    deployments["UniswapV2Factory"] = await factory.getAddress();
-    console.log("✅ UniswapV2Factory:", deployments["UniswapV2Factory"], "\n");
-    
-    // 4. Deploy UniswapV2Router02
-    console.log("📦 Deploying UniswapV2Router02...");
-    const UniswapV2Router02 = await ethers.getContractFactory("UniswapV2Router02");
-    const router = await UniswapV2Router02.deploy(deployments["UniswapV2Factory"], deployments["WETH9"]);
-    await router.waitForDeployment();
-    deployments["UniswapV2Router02"] = await router.getAddress();
-    console.log("✅ UniswapV2Router02:", deployments["UniswapV2Router02"], "\n");
-    
-    // 5. Deploy Wrapped Tokens
-    console.log("📦 Deploying WrappedBTC...");
-    const WrappedBTC = await ethers.getContractFactory("WrappedBTC");
-    const wbtc = await WrappedBTC.deploy();
-    await wbtc.waitForDeployment();
-    deployments["WrappedBTC"] = await wbtc.getAddress();
-    console.log("✅ WrappedBTC:", deployments["WrappedBTC"], "\n");
-    
-    console.log("📦 Deploying WrappedETH...");
-    const WrappedETH = await ethers.getContractFactory("WrappedETH");
-    const weth = await WrappedETH.deploy();
-    await weth.waitForDeployment();
-    deployments["WrappedETH"] = await weth.getAddress();
-    console.log("✅ WrappedETH:", deployments["WrappedETH"], "\n");
-    
-    console.log("📦 Deploying WrappedSOL...");
-    const WrappedSOL = await ethers.getContractFactory("WrappedSOL");
-    const wsol = await WrappedSOL.deploy();
-    await wsol.waitForDeployment();
-    deployments["WrappedSOL"] = await wsol.getAddress();
-    console.log("✅ WrappedSOL:", deployments["WrappedSOL"], "\n");
-    
-    // Save deployment addresses
-    const deploymentsPath = path.join(__dirname, "../deployments.json");
-    fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2));
+    // Get all deployed contracts
+    const allDeployments = await deployments.all();
     
     console.log("\n" + "=".repeat(80));
     console.log("🎉 DEPLOYMENT COMPLETE");
     console.log("=".repeat(80));
     console.log("\nDeployed Contracts:");
     console.log("-".repeat(80));
-    for (const [name, address] of Object.entries(deployments)) {
-      console.log(`${name.padEnd(25)} ${address}`);
+    
+    const deploymentSummary: Record<string, any> = {};
+    
+    for (const [name, deployment] of Object.entries(allDeployments)) {
+      const dep = deployment as any;
+      console.log(`${name.padEnd(25)} ${dep.address}`);
+      deploymentSummary[name] = {
+        address: dep.address,
+        txHash: dep.transactionHash,
+      };
     }
+    
     console.log("-".repeat(80));
-    console.log(`\n📄 Addresses saved to: ${deploymentsPath}\n`);
+    console.log(`\nTotal contracts deployed: ${Object.keys(allDeployments).length}`);
+    
+    // Save deployment summary
+    const summaryPath = path.join(__dirname, "../deployment-summary.json");
+    fs.writeFileSync(summaryPath, JSON.stringify(deploymentSummary, null, 2));
+    console.log(`\n📄 Deployment summary saved to: ${summaryPath}\n`);
+    
+    // Print network info
+    console.log("Network Information:");
+    console.log("-".repeat(80));
+    console.log(`Network: ${hre.network.name}`);
+    if (networkConfig.url) {
+      console.log(`RPC URL: ${networkConfig.url}`);
+    }
+    if (networkConfig.chainId) {
+      console.log(`Chain ID: ${networkConfig.chainId}`);
+    }
+    console.log("-".repeat(80) + "\n");
     
   } catch (error) {
     console.error("\n❌ Deployment failed:", error);
@@ -93,8 +74,11 @@ async function main() {
 }
 
 main()
-  .then(() => process.exit(0))
+  .then(() => {
+    console.log("✅ All deployments completed successfully!");
+    process.exit(0);
+  })
   .catch((error) => {
-    console.error(error);
+    console.error("❌ Fatal error:", error);
     process.exit(1);
   });

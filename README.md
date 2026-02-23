@@ -333,13 +333,44 @@ Comprehensive testing documentation is available in [TESTING.md](TESTING.md), in
 
 ## Contract Addresses
 
-### Regtest Deployment
+### Regtest Deployment (February 2026)
 
-Contract addresses will be updated here after deployment:
+All contracts successfully deployed to MIDL Regtest network.
 
-- PerpetualExchange: `<pending-deployment>`
+#### Core Contracts
 
-Verify contracts on Blockscout: https://blockscout.staging.midl.xyz
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| **PerpetualExchange** | `0xB6de03a50D0cfed70B5687c9461Cbf56545481cb` | Main perpetual futures trading contract |
+| **MarginAccount** | `0x425A2E54f9eec665cfFf7c6F87fE69A90B800d7c` | Manages user margin accounts and locked margins |
+| **TokenFactory** | `0x99fB32Dd45f43B5585bc86cB06c54aA56e519347` | Factory for creating meme tokens with bonding curve |
+| **Token** | `0x6A8A491C81Ff46954C4eD22D91a633Aa2063F70C` | Base ERC20 token implementation |
+
+#### Uniswap V2 DEX Infrastructure
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| **WETH9** | `0x78123C7a9523226543bAF753A2c53bd716d02452` | Wrapped native token for DEX trading |
+| **UniswapV2Factory** | `0xa615c9f5B2555344658Ec5A4e499B171984010e4` | Creates Uniswap V2 trading pairs |
+| **UniswapV2Router02** | `0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887` | Router for swaps and liquidity management |
+
+#### Wrapped Tokens (Multi-Asset Support)
+
+| Token | Address | Symbol | Decimals | Purpose |
+|-------|---------|--------|----------|---------|
+| **WrappedBTC** | `0x79939104589669c632264909dfF99E5A7ab99cd8` | WBTC | 8 | Wrapped Bitcoin for perpetual trading |
+| **WrappedETH** | `0xBA35a3207b893fd01C29f50CE5c8504a5Df5E0ad` | WETH | 18 | Wrapped Ethereum for perpetual trading |
+| **WrappedSOL** | `0xfE78ca3296a6b8356c6A566ef56B6831178085cf` | WSOL | 9 | Wrapped Solana for perpetual trading |
+
+**Network Details:**
+- RPC URL: https://rpc.staging.midl.xyz
+- Explorer: https://mempool.staging.midl.xyz
+- Blockscout: https://blockscout.staging.midl.xyz
+
+**Documentation:**
+- Full deployment details: [packages/hardhat-midl/DEPLOYMENTS.md](packages/hardhat-midl/DEPLOYMENTS.md)
+- Machine-readable addresses: [packages/hardhat-midl/deployed-addresses.json](packages/hardhat-midl/deployed-addresses.json)
+- Individual ABIs: `packages/hardhat-midl/deployments/*.json`
 
 ## Security Considerations
 
