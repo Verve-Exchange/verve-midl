@@ -14,41 +14,68 @@ All contracts successfully deployed to MIDL Regtest network.
 
 #### mUSDT Stablecoin System
 
-| Contract | Address | Purpose |
-|----------|---------|---------|
-| **mUSDT** | `0xA82c1B2b1171e32a3950A10FcEDbccc29995907f` | Algorithmic stablecoin (CDP-based, over-collateralized) |
-| **PerpetualDEX** | `0x8247B5B9973D1f7dd34623b91e1252cdFf51526F` | Perpetual futures exchange using mUSDT as collateral |
-| **Faucet** | `0x21Ce37A49cA9A291c5fA9ABA6e7eB720A1505aD8` | Testnet token faucet (DO NOT deploy to mainnet) |
+| Contract | Address | Purpose | Source Code |
+|----------|---------|---------|-------------|
+| **mUSDT** | `0xA82c1B2b1171e32a3950A10FcEDbccc29995907f` | Algorithmic stablecoin (CDP-based, over-collateralized) | [View Code](https://blockscout.staging.midl.xyz/address/0xA82c1B2b1171e32a3950A10FcEDbccc29995907f#code) |
+| **PerpetualDEX** | `0x8247B5B9973D1f7dd34623b91e1252cdFf51526F` | Perpetual futures exchange using mUSDT as collateral | [View Code](https://blockscout.staging.midl.xyz/address/0x8247B5B9973D1f7dd34623b91e1252cdFf51526F#code) |
+| **Faucet** | `0x21Ce37A49cA9A291c5fA9ABA6e7eB720A1505aD8` | Testnet token faucet (DO NOT deploy to mainnet) | [View Code](https://blockscout.staging.midl.xyz/address/0x21Ce37A49cA9A291c5fA9ABA6e7eB720A1505aD8#code) |
 
 #### Core Contracts
 
-| Contract | Address | Purpose |
-|----------|---------|---------|
-| **PerpetualExchange** | `0xB6de03a50D0cfed70B5687c9461Cbf56545481cb` | Legacy perpetual futures trading contract |
-| **MarginAccount** | `0x425A2E54f9eec665cfFf7c6F87fE69A90B800d7c` | Manages user margin accounts and locked margins |
-| **TokenFactory** | `0x99fB32Dd45f43B5585bc86cB06c54aA56e519347` | Factory for creating meme tokens with bonding curve |
-| **Token** | `0x6A8A491C81Ff46954C4eD22D91a633Aa2063F70C` | Base ERC20 token implementation |
+| Contract | Address | Purpose | Source Code |
+|----------|---------|---------|-------------|
+| **PerpetualExchange** | `0xB6de03a50D0cfed70B5687c9461Cbf56545481cb` | Legacy perpetual futures trading contract | [View Code](https://blockscout.staging.midl.xyz/address/0xB6de03a50D0cfed70B5687c9461Cbf56545481cb#code) |
+| **MarginAccount** | `0x425A2E54f9eec665cfFf7c6F87fE69A90B800d7c` | Manages user margin accounts and locked margins | [View Code](https://blockscout.staging.midl.xyz/address/0x425A2E54f9eec665cfFf7c6F87fE69A90B800d7c#code) |
+| **TokenFactory** | `0x99fB32Dd45f43B5585bc86cB06c54aA56e519347` | Factory for creating meme tokens with bonding curve | [View Code](https://blockscout.staging.midl.xyz/address/0x99fB32Dd45f43B5585bc86cB06c54aA56e519347#code) |
+| **Token** | `0x6A8A491C81Ff46954C4eD22D91a633Aa2063F70C` | Base ERC20 token implementation | [View Code](https://blockscout.staging.midl.xyz/address/0x6A8A491C81Ff46954C4eD22D91a633Aa2063F70C#code) |
 
 #### Uniswap V2 DEX Infrastructure
 
-| Contract | Address | Purpose |
-|----------|---------|---------|
-| **WETH9** | `0x78123C7a9523226543bAF753A2c53bd716d02452` | Wrapped native token for DEX trading |
-| **UniswapV2Factory** | `0xa615c9f5B2555344658Ec5A4e499B171984010e4` | Creates Uniswap V2 trading pairs |
-| **UniswapV2Router02** | `0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887` | Router for swaps and liquidity management |
+| Contract | Address | Purpose | Source Code |
+|----------|---------|---------|-------------|
+| **WETH9** | `0x78123C7a9523226543bAF753A2c53bd716d02452` | Wrapped native token for DEX trading | [View Code](https://blockscout.staging.midl.xyz/address/0x78123C7a9523226543bAF753A2c53bd716d02452#code) |
+| **UniswapV2Factory** | `0xa615c9f5B2555344658Ec5A4e499B171984010e4` | Creates Uniswap V2 trading pairs | [View Code](https://blockscout.staging.midl.xyz/address/0xa615c9f5B2555344658Ec5A4e499B171984010e4#code) |
+| **UniswapV2Router02** | `0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887` | Router for swaps and liquidity management | [View Code](https://blockscout.staging.midl.xyz/address/0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887#code) |
 
 #### Wrapped Tokens (Multi-Asset Support)
 
-| Token | Address | Symbol | Decimals | Purpose |
-|-------|---------|--------|----------|---------|
-| **WrappedBTC** | `0x79939104589669c632264909dfF99E5A7ab99cd8` | WBTC | 8 | Wrapped Bitcoin for perpetual trading |
-| **WrappedETH** | `0xBA35a3207b893fd01C29f50CE5c8504a5Df5E0ad` | WETH | 18 | Wrapped Ethereum for perpetual trading |
-| **WrappedSOL** | `0xfE78ca3296a6b8356c6A566ef56B6831178085cf` | WSOL | 9 | Wrapped Solana for perpetual trading |
+| Token | Address | Symbol | Decimals | Purpose | Source Code |
+|-------|---------|--------|----------|---------|-------------|
+| **WrappedBTC** | `0x79939104589669c632264909dfF99E5A7ab99cd8` | WBTC | 8 | Wrapped Bitcoin for perpetual trading | [View Code](https://blockscout.staging.midl.xyz/address/0x79939104589669c632264909dfF99E5A7ab99cd8#code) |
+| **WrappedETH** | `0xBA35a3207b893fd01C29f50CE5c8504a5Df5E0ad` | WETH | 18 | Wrapped Ethereum for perpetual trading | [View Code](https://blockscout.staging.midl.xyz/address/0xBA35a3207b893fd01C29f50CE5c8504a5Df5E0ad#code) |
+| **WrappedSOL** | `0xfE78ca3296a6b8356c6A566ef56B6831178085cf` | WSOL | 9 | Wrapped Solana for perpetual trading | [View Code](https://blockscout.staging.midl.xyz/address/0xfE78ca3296a6b8356c6A566ef56B6831178085cf#code) |
 
 **Network Details:**
 - RPC URL: https://rpc.staging.midl.xyz
 - Explorer: https://mempool.staging.midl.xyz
 - Blockscout: https://blockscout.staging.midl.xyz
+
+**Contract Verification:**
+
+All contracts can be verified on Blockscout using:
+```bash
+cd packages/hardhat-midl
+pnpm hardhat verify <CONTRACT_ADDRESS> --network regtest
+```
+
+For contracts with constructor arguments:
+```bash
+# mUSDT (with debt ceiling)
+pnpm hardhat verify 0xA82c1B2b1171e32a3950A10FcEDbccc29995907f "100000000000000000000000000" --network regtest
+
+# PerpetualDEX (with mUSDT address)
+pnpm hardhat verify 0x8247B5B9973D1f7dd34623b91e1252cdFf51526F "0xA82c1B2b1171e32a3950A10FcEDbccc29995907f" --network regtest
+
+# TokenFactory (with Uniswap addresses)
+pnpm hardhat verify 0x99fB32Dd45f43B5585bc86cB06c54aA56e519347 "0xa615c9f5B2555344658Ec5A4e499B171984010e4" "0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887" --network regtest
+
+# UniswapV2Router02 (with factory and WETH addresses)
+pnpm hardhat verify 0xFB5D8eE9aD10a0e24aa23750B0D71e9Ce4a83887 "0xa615c9f5B2555344658Ec5A4e499B171984010e4" "0x78123C7a9523226543bAF753A2c53bd716d02452" --network regtest
+```
+
+View verified contracts on Blockscout:
+- https://blockscout.staging.midl.xyz/address/0xA82c1B2b1171e32a3950A10FcEDbccc29995907f
+- https://blockscout.staging.midl.xyz/address/0x8247B5B9973D1f7dd34623b91e1252cdFf51526F
 
 **Documentation:**
 - System Overview: [packages/hardhat-midl/SYSTEM_OVERVIEW.md](packages/hardhat-midl/SYSTEM_OVERVIEW.md)

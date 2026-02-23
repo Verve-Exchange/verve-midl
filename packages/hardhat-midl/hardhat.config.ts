@@ -1,6 +1,7 @@
 import "@midl/hardhat-deploy";
 import { MaestroSymphonyProvider, MempoolSpaceProvider } from "@midl/core";
 import { midl, midlRegtest } from "@midl/executor";
+import "@nomicfoundation/hardhat-verify";
 import "@typechain/hardhat";
 import { config as dotenvConfig } from "dotenv";
 import "hardhat-deploy";
@@ -121,6 +122,30 @@ const config: HardhatUserConfig = {
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts",
+  },
+  etherscan: {
+    apiKey: {
+      regtest: "no-api-key-needed",
+      default: "no-api-key-needed",
+    },
+    customChains: [
+      {
+        network: "regtest",
+        chainId: midlRegtest.id,
+        urls: {
+          apiURL: "https://blockscout.staging.midl.xyz/api",
+          browserURL: "https://blockscout.staging.midl.xyz",
+        },
+      },
+      {
+        network: "default",
+        chainId: midl.id,
+        urls: {
+          apiURL: "https://blockscout.midl.xyz/api",
+          browserURL: "https://blockscout.midl.xyz",
+        },
+      },
+    ],
   },
 } as any;
 
