@@ -9,7 +9,10 @@
     "deploy": "hardhat deploy --network regtest",
     "deploy:all": "ts-node scripts/deploy-all.ts",
     "deploy:mainnet": "hardhat deploy --network default",
-    "clean": "hardhat clean"
+    "clean": "hardhat clean",
+    "check-faucet": "hardhat run scripts/check-faucet-state.ts --network regtest",
+    "enable-faucet": "hardhat run scripts/enable-faucet-tokens.ts --network regtest",
+    "configure-faucet": "hardhat deploy --network regtest --tags ConfigureFaucet --reset"
   },
   "keywords": [],
   "author": "",
