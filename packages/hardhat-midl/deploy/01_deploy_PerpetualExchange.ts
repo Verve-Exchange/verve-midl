@@ -1,6 +1,8 @@
 import type { DeployFunction } from "hardhat-deploy/types";
 
-const deploy: DeployFunction = async ({ midl }) => {
+const deploy: DeployFunction = async (hre) => {
+  const { midl } = hre as any;
+  
   console.log("🚀 Starting PerpetualExchange deployment...");
   
   await midl.initialize();

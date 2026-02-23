@@ -1,12 +1,10 @@
 import type { DeployFunction } from "hardhat-deploy/types";
-import type { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deploy: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
-  const { midl, getNamedAccounts } = hre;
+const deploy: DeployFunction = async (hre) => {
+  const { midl, getNamedAccounts } = hre as any;
   const { deployer } = await getNamedAccounts();
   
   console.log("🚀 Starting Uniswap V2 deployment...");
-  console.log("📍 Deployer address:", deployer);
   
   await midl.initialize();
   
@@ -16,9 +14,8 @@ const deploy: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   
   // Deploy UniswapV2Factory
   console.log("📦 Deploying UniswapV2Factory...");
-  await midl.deploy("UniswapV2Factory", [deployer]); // feeToSetter
+  await midl.deploy("UniswapV2Factory", [deployer]);
   
-  // Execute all deployments
   await midl.execute();
   
   const weth = await midl.get("WETH9");
@@ -27,7 +24,7 @@ const deploy: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   console.log("✅ WETH9 deployed at:", weth?.address);
   console.log("✅ UniswapV2Factory deployed at:", factory?.address);
   
-  // Deploy UniswapV2Router02 in a separate transaction
+  // Deploy UniswapV2Router02
   await midl.initialize();
   console.log("📦 Deploying UniswapV2Router02...");
   await midl.deploy("UniswapV2Router02", [factory?.address, weth?.address]);

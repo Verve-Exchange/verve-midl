@@ -12,11 +12,19 @@ This project implements a production-grade perpetual trading platform that lever
 
 All contracts successfully deployed to MIDL Regtest network.
 
+#### mUSDT Stablecoin System
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| **mUSDT** | `0xA82c1B2b1171e32a3950A10FcEDbccc29995907f` | Algorithmic stablecoin (CDP-based, over-collateralized) |
+| **PerpetualDEX** | `0x8247B5B9973D1f7dd34623b91e1252cdFf51526F` | Perpetual futures exchange using mUSDT as collateral |
+| **Faucet** | `0x21Ce37A49cA9A291c5fA9ABA6e7eB720A1505aD8` | Testnet token faucet (DO NOT deploy to mainnet) |
+
 #### Core Contracts
 
 | Contract | Address | Purpose |
 |----------|---------|---------|
-| **PerpetualExchange** | `0xB6de03a50D0cfed70B5687c9461Cbf56545481cb` | Main perpetual futures trading contract |
+| **PerpetualExchange** | `0xB6de03a50D0cfed70B5687c9461Cbf56545481cb` | Legacy perpetual futures trading contract |
 | **MarginAccount** | `0x425A2E54f9eec665cfFf7c6F87fE69A90B800d7c` | Manages user margin accounts and locked margins |
 | **TokenFactory** | `0x99fB32Dd45f43B5585bc86cB06c54aA56e519347` | Factory for creating meme tokens with bonding curve |
 | **Token** | `0x6A8A491C81Ff46954C4eD22D91a633Aa2063F70C` | Base ERC20 token implementation |
@@ -43,6 +51,8 @@ All contracts successfully deployed to MIDL Regtest network.
 - Blockscout: https://blockscout.staging.midl.xyz
 
 **Documentation:**
+- System Overview: [packages/hardhat-midl/SYSTEM_OVERVIEW.md](packages/hardhat-midl/SYSTEM_OVERVIEW.md)
+- Production Guide: [packages/hardhat-midl/PRODUCTION_GUIDE.md](packages/hardhat-midl/PRODUCTION_GUIDE.md)
 - Full deployment details: [packages/hardhat-midl/DEPLOYMENTS.md](packages/hardhat-midl/DEPLOYMENTS.md)
 - Machine-readable addresses: [packages/hardhat-midl/deployed-addresses.json](packages/hardhat-midl/deployed-addresses.json)
 - Individual ABIs: `packages/hardhat-midl/deployments/*.json`
